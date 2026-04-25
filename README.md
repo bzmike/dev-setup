@@ -516,8 +516,8 @@ Example:
       "enabled": true,
       "files": [
         {
-          "source": "glazewm/config.yaml",
-          "target": "~\\.glzr\\glazewm\\config.yaml",
+          "source": "glazewm/config.template.yaml",
+          "target": "~\\.glzr\\glazewm\\config.template.yaml",
           "overwrite": true,
           "backup": true
         }

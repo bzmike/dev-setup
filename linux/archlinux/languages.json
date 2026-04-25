@@ -1,0 +1,39 @@
+{
+  "languages": [
+    {
+      "name": "Rust",
+      "script": "rust.sh",
+      "enabled": true
+    },
+    {
+      "name": "Go",
+      "script": "go.sh",
+      "enabled": true
+    },
+    {
+      "name": "PHP",
+      "script": "php.sh",
+      "enabled": true
+    },
+    {
+      "name": "Zig",
+      "script": "zig.sh",
+      "enabled": true
+    },
+    {
+      "name": "Node.js",
+      "script": "node.sh",
+      "enabled": true
+    },
+    {
+      "name": "dotenvx",
+      "script": "dotenvx.sh",
+      "enabled": true
+    },
+    {
+      "name": "Python",
+      "script": "python.sh",
+      "enabled": true
+    }
+  ]
+}

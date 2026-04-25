@@ -1,0 +1,64 @@
+{
+  "packages": [
+    {
+      "name": "OpenSSH",
+      "pacman_name": "openssh",
+      "enabled": true
+    },
+    {
+      "name": "jq",
+      "pacman_name": "jq",
+      "enabled": true
+    },
+    {
+      "name": "SOPS",
+      "pacman_name": "sops",
+      "enabled": true,
+      "__description": "Used for environment variables"
+    },
+    {
+      "name": "age",
+      "pacman_name": "age",
+      "enabled": true,
+      "__description": "Used for environment variables"
+    },
+    {
+      "name": "gettext",
+      "pacman_name": "gettext",
+      "enabled": true,
+      "__description": "Used for envsubst to render ${VARIABLES}"
+    }
+  ],
+  "commands": [
+    {
+      "name": "SOPS",
+      "command": "sops",
+      "required": true
+    },
+    {
+      "name": "age",
+      "command": "age",
+      "required": true
+    },
+    {
+      "name": "gettext",
+      "command": "gettext",
+      "required": true
+    },
+    {
+      "name": "ssh",
+      "command": "ssh",
+      "required": true
+    },
+    {
+      "name": "ssh-keygen",
+      "command": "ssh-keygen",
+      "required": true
+    },
+    {
+      "name": "Git",
+      "pacman_name": "git",
+      "enabled": true
+    }
+  ]
+}

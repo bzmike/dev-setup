@@ -1,0 +1,3 @@
+creation_rules:
+  - path_regex: shared/env/.*\.env(\.enc)?$
+    age: age1yygxu9708cwcefxwlyq38cw8wev4vdxdjs8jq6qy052pagjkj38s83kfrk

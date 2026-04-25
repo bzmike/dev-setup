@@ -1,0 +1,4 @@
+[user]
+    name = ${PRIVATE_GIT_NAME}
+    email = ${PRIVATE_GIT_EMAIL}
+    signingkey = ${PRIVATE_GPG_KEY_ID}

@@ -1,0 +1,19 @@
+{
+  "packages": [
+    {
+      "name": "Git",
+      "pacman_name": "git",
+      "enabled": true
+    },
+    {
+      "name": "Curl",
+      "pacman_name": "curl",
+      "enabled": true
+    },
+    {
+      "name": "Nano",
+      "pacman_name": "nano",
+      "enabled": true
+    }
+  ]
+}

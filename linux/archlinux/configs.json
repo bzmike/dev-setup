@@ -1,0 +1,63 @@
+{
+  "config_groups": [
+    {
+      "name": "Bash",
+      "enabled": false,
+      "files": [
+        {
+          "source": "bash/.bashrc",
+          "source_base": "local",
+          "target": "~/.bashrc",
+          "overwrite": true,
+          "backup": true,
+          "mode": "644"
+        }
+      ]
+    },
+    {
+      "name": "SSH",
+      "enabled": true,
+      "files": [
+        {
+          "source": "generated/ssh-config",
+          "source_base": "local",
+          "target": "~/.ssh/config",
+          "overwrite": true,
+          "backup": true,
+          "mode": "600",
+          "directory_mode": "700"
+        }
+      ]
+    },
+    {
+      "name": "Git",
+      "enabled": true,
+      "files": [
+        {
+          "source": "git/.gitconfig",
+          "source_base": "shared",
+          "target": "~/.gitconfig",
+          "overwrite": true,
+          "backup": true,
+          "mode": "644"
+        },
+        {
+          "source": "generated/.gitconfig-private",
+          "source_base": "local",
+          "target": "~/.gitconfig-private",
+          "overwrite": true,
+          "backup": true,
+          "mode": "600"
+        },
+        {
+          "source": "generated/.gitconfig-work",
+          "source_base": "local",
+          "target": "~/.gitconfig-work",
+          "overwrite": true,
+          "backup": true,
+          "mode": "600"
+        }
+      ]
+    }
+  ]
+}

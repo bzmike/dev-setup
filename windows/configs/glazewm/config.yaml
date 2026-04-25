@@ -8,7 +8,7 @@ general:
   # Example: The below command kills Zebar.
   shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
 
-  # Commands to run after the WM config is reloaded.
+  # Commands to run after the WM config.template is reloaded.
   config_reload_commands: []
 
   # Whether to automatically focus windows underneath the cursor.
@@ -246,7 +246,7 @@ keybindings:
     bindings: ['alt+shift+e']
 
   # Re-evaluate configuration file.
-  - commands: ['wm-reload-config']
+  - commands: ['wm-reload-config.template']
     bindings: ['alt+shift+r']
 
   # Redraw all windows.
@@ -259,7 +259,7 @@ keybindings:
   - commands: ['shell-exec cmd']
     bindings: ['alt+enter']
 
-  # Focus the next/previous active workspace defined in `workspaces` config.
+  # Focus the next/previous active workspace defined in `workspaces` config.template.
   - commands: ['focus --next-active-workspace']
     bindings: ['alt+s']
   - commands: ['focus --prev-active-workspace']
@@ -269,7 +269,7 @@ keybindings:
   - commands: ['focus --recent-workspace']
     bindings: ['alt+d']
 
-  # Change focus to a workspace defined in `workspaces` config.
+  # Change focus to a workspace defined in `workspaces` config.template.
   - commands: ['focus --workspace 1']
     bindings: ['alt+1']
   - commands: ['focus --workspace 2']
@@ -300,7 +300,7 @@ keybindings:
   - commands: ['move-workspace --direction down']
     bindings: ['alt+shift+s']
 
-  # Move focused window to a workspace defined in `workspaces` config.
+  # Move focused window to a workspace defined in `workspaces` config.template.
   - commands: ['move --workspace 1', 'focus --workspace 1']
     bindings: ['alt+shift+1']
   - commands: ['move --workspace 2', 'focus --workspace 2']

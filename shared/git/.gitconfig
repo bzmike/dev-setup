@@ -1,0 +1,21 @@
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = false
+
+[push]
+	autoSetupRemote = true
+
+[core]
+	editor = nano
+	autocrlf = input
+
+[user]
+    useConfigOnly = true
+
+[includeIf "gitdir:~/workspace/private/"]
+	path = ~/.gitconfig-private
+
+[includeIf "gitdir:~/workspace/work/"]
+	path = ~/.gitconfig-work

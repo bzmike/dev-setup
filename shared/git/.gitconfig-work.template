@@ -1,0 +1,4 @@
+[user]
+    name = ${WORK_GIT_NAME}
+    email = ${WORK_GIT_EMAIL}
+    signingkey = ${WORK_GPG_KEY_ID}

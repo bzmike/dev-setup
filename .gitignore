@@ -1,1 +1,10 @@
+# Ignore plain env files
+*.env
+**/*.env
+
+# Allow encrypted env files
+!*.env.enc
+!**/*.env.enc
+
 /windows/logs/
+/linux/archlinux/logs/

@@ -1,0 +1,11 @@
+Host ${PRIVATE_GIT_HOST_ALIAS}
+    HostName ${PRIVATE_GIT_HOST_NAME}
+    User git
+    IdentityFile ~/.ssh/${PRIVATE_SSH_KEY_FILE}
+    IdentitiesOnly yes
+
+Host ${WORK_GIT_HOST_ALIAS}
+    HostName ${WORK_GIT_HOST_NAME}
+    User git
+    IdentityFile ~/.ssh/${WORK_SSH_KEY_FILE}
+    IdentitiesOnly yes
