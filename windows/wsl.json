@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "default_distro": "archlinux",
+  "distros": [
+    {
+      "name": "Arch Linux",
+      "wsl_name": "archlinux",
+      "enabled": true
+    },
+    {
+      "name": "Ubuntu",
+      "wsl_name": "Ubuntu",
+      "enabled": true
+    },
+    {
+      "name": "Debian",
+      "wsl_name": "Debian",
+      "enabled": true
+    }
+  ]
+}

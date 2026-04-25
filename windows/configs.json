@@ -1,0 +1,28 @@
+{
+  "config_groups": [
+    {
+      "name": "GlazeWM",
+      "enabled": true,
+      "files": [
+        {
+          "source": "glazewm/config.yaml",
+          "target": "~\\.glzr\\glazewm\\config.yaml",
+          "overwrite": true,
+          "backup": true
+        }
+      ]
+    },
+    {
+      "name": "Zebar",
+      "enabled": true,
+      "files": [
+        {
+          "source": "zebar/settings.json",
+          "target": "~\\.glzr\\zebar\\settings.json",
+          "overwrite": true,
+          "backup": true
+        }
+      ]
+    }
+  ]
+}

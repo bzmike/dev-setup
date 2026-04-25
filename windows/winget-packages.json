@@ -1,0 +1,64 @@
+{
+  "packages": [
+    {
+      "name": "EurKEY",
+      "winget_id": "SteffenBruentjen.EurKEY",
+      "enabled": true,
+      "__description": "Keyboard layout"
+    },
+    {
+      "name": "GlazeWM",
+      "winget_id": "glzr-io.glazewm",
+      "enabled": true,
+      "__description": "Window tiling manager"
+    },
+    {
+      "name": "Flow Launcher",
+      "winget_id": "Flow-Launcher.Flow-Launcher",
+      "enabled": true,
+      "__description": "Launcher for everything -> apps, bookmarks, etc."
+    },
+    {
+      "name": "JetBrains Toolbox",
+      "winget_id": "JetBrains.Toolbox",
+      "enabled": true,
+      "__description": "JetBrains IDE"
+    },
+    {
+      "name": "Docker Desktop",
+      "winget_id": "Docker.DockerDesktop",
+      "enabled": true,
+      "__description": "You know what this is"
+    },
+    {
+      "name": "Notepad++",
+      "winget_id": "Notepad++.Notepad++",
+      "enabled": true,
+      "__description": "Text editor"
+    },
+    {
+      "name": "Slack",
+      "winget_id": "SlackTechnologies.Slack",
+      "enabled": true,
+      "__description": "You know what this is"
+    },
+    {
+      "name": "Fork",
+      "winget_id": "Fork.Fork",
+      "enabled": true,
+      "__description": "Git manager"
+    },
+    {
+      "name": "GitKraken",
+      "winget_id": "Axosoft.GitKraken",
+      "enabled": false,
+      "__description": "Git manager"
+    },
+    {
+      "name": "Zoho Mail",
+      "winget_id": "Zoho.ZohoMail.Desktop",
+      "enabled": false,
+      "__description": "Mail client or horrible piece of s**t, i have to use."
+    }
+  ]
+}
