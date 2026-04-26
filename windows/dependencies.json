@@ -1,8 +1,36 @@
 {
+  "packages": [
+    {
+      "name": "Git",
+      "winget_id": "Git.Git",
+      "enabled": true
+    },
+    {
+      "name": "Gpg4win",
+      "winget_id": "GnuPG.Gpg4win",
+      "enabled": true
+    },
+    {
+      "name": "age",
+      "winget_id": "FiloSottile.age",
+      "enabled": true,
+      "__description": "Used for environment variables"
+    }
+  ],
   "commands": [
     {
       "name": "winget",
       "command": "winget",
+      "required": true
+    },
+    {
+      "name": "ssh",
+      "command": "ssh",
+      "required": true
+    },
+    {
+      "name": "ssh-keygen",
+      "command": "ssh-keygen",
       "required": true
     }
   ]

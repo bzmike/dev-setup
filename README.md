@@ -24,6 +24,9 @@ Setting up a new development machine usually involves many repeated manual steps
 - preparing WSL
 - installing Linux distributions
 - configuring Git and SSH
+- managing encrypted setup values with SOPS + age
+- preparing Git identities for private and work projects
+- preparing SSH and GPG keys for GitHub and Bitbucket
 - copying config files
 - setting up shells and terminals
 - installing programming languages
@@ -48,6 +51,96 @@ dev-setup/
 
 ---
 
+## Encrypted Configuration Values
+
+This repository uses **SOPS + age** for encrypted setup values.
+
+Encrypted environment files live in:
+
+```text
+shared/env/
+├── git.env.enc
+└── ssh.env.enc
+```
+
+These files may contain encrypted values such as:
+
+* private Git name
+* private Git email
+* work Git name
+* work Git email
+* SSH host aliases
+* SSH key file names
+* GPG signing key IDs
+
+The encrypted `*.env.enc` files are safe to commit.
+
+Plain text environment files must never be committed.
+
+Do not commit:
+
+```text
+shared/env/*.env
+*.env.dec
+age private keys
+```
+
+The age private key is required to decrypt the files on a new machine.
+
+On Linux, SOPS usually expects the age key here:
+
+```text
+~/.config/sops/age/keys.txt
+```
+
+On Windows, SOPS usually expects the age key here:
+
+```text
+%APPDATA%\sops\age\keys.txt
+```
+
+The age private key should be stored securely, for example in a password manager.
+
+---
+
+## Important SOPS Version Note
+
+Before decrypting or editing encrypted files, always check which SOPS version was used to create them.
+
+SOPS stores metadata inside the encrypted `*.env.enc` files, including the SOPS version.
+
+You can inspect an encrypted file directly:
+
+```bash
+cat shared/env/git.env.enc
+```
+
+Look for metadata similar to:
+
+```text
+sops_version=...
+```
+
+Use a compatible SOPS version when decrypting on another system.
+
+This is especially important on Windows, because package managers may provide an older SOPS version than the one used to encrypt the files.
+
+Check the installed SOPS version:
+
+```powershell
+sops --version
+```
+
+The Windows setup documentation explains how to manually install a newer SOPS binary if the Winget version is too old.
+
+See:
+
+```text
+windows/README.md
+```
+
+---
+
 ## Directories
 
 ### `windows/`
@@ -61,6 +154,7 @@ This includes:
 * WSL distro installation
 * Winget package installation
 * Windows application setup
+* SOPS + age encrypted env preparation
 * Windows-specific config file copying
 * config backup handling
 * setup logging
@@ -71,6 +165,8 @@ Example use cases:
 * install or skip WSL
 * install Arch Linux, Ubuntu or Debian through WSL
 * install Git, JetBrains Toolbox, Docker Desktop, GlazeWM and Flow Launcher
+* decrypt encrypted setup values
+* render Git and SSH config templates
 * copy GlazeWM config files
 * copy PowerShell profile files
 * log failed package installs without stopping the whole setup
@@ -110,51 +206,73 @@ This area is intended for:
 * package manager setup
 * shell setup
 * Git and SSH setup
+* SOPS + age encrypted env preparation
 * Docker CLI setup
-* Node.js, PHP, Python, Java, Go or other language tooling
+* Node.js, PHP, Python, Rust, Go, Zig or other language tooling
 
-Example future structure:
+Example structure:
 
 ```text
 linux/archlinux/
 ├── README.md
 ├── install.sh
-├── packages/
-│   ├── base.txt
-│   ├── node.txt
-│   ├── php.txt
-│   ├── python.txt
-│   └── docker.txt
+├── dependencies.json
+├── pacman-packages.json
+├── languages.json
+├── configs.json
+├── configs/
 └── scripts/
-    ├── install-base.sh
-    ├── install-node.sh
-    ├── install-php.sh
-    └── install-docker-cli.sh
+    ├── common.sh
+    ├── dependencies.sh
+    ├── pacman-packages.sh
+    ├── languages.sh
+    ├── secrets.sh
+    ├── configs.sh
+    └── languages/
+        ├── node.sh
+        ├── python.sh
+        ├── rust.sh
+        ├── go.sh
+        ├── php.sh
+        └── zig.sh
 ```
 
 ---
 
 ### `shared/`
 
-Shared configuration and documentation that may be useful across multiple operating systems.
+Shared configuration and templates that may be useful across multiple operating systems.
 
 This folder may contain:
 
-* Git configuration examples
-* SSH setup notes
-* editor-independent conventions
+* Git base configuration
+* Git profile templates
+* SSH config templates
+* encrypted setup values
 * shared dotfiles
+* editor-independent conventions
 * general development defaults
 
 Example:
 
 ```text
 shared/
+├── env/
+│   ├── git.env.enc
+│   └── ssh.env.enc
 ├── git/
-│   └── .gitconfig.example
+│   ├── .gitconfig
+│   ├── .gitconfig-private.template
+│   └── .gitconfig-work.template
 └── ssh/
-    └── README.md
+    └── config.template
 ```
+
+The files in `shared/env/` are encrypted with SOPS + age.
+
+The files in `shared/git/` and `shared/ssh/` are templates or shared base configs.
+
+Generated files such as `.gitconfig-private`, `.gitconfig-work` and `ssh-config` are created locally during setup and should not be committed.
 
 ---
 
@@ -172,7 +290,11 @@ docs/
 ├── archlinux.md
 ├── wsl.md
 ├── jetbrains-wsl.md
-└── sparse-checkout.md
+├── sparse-checkout.md
+└── git/
+    ├── keys-windows.md
+    ├── keys-archlinux.md
+    └── add-keys-to-git-hosts.md
 ```
 
 ---
@@ -318,7 +440,9 @@ Shared files belong in `shared/`.
 
 The setup should not become one large script that does everything.
 
-Instead, each concern should live in its own script:
+Instead, each concern should live in its own script.
+
+Windows example:
 
 ```text
 windows/scripts/
@@ -326,10 +450,24 @@ windows/scripts/
 ├── wsl.ps1
 ├── dependencies.ps1
 ├── winget-packages.ps1
+├── secrets.ps1
 └── configs.ps1
 ```
 
-The main `install.ps1` acts as the entry point and orchestrates the individual setup steps.
+Arch Linux example:
+
+```text
+linux/archlinux/scripts/
+├── common.sh
+├── dependencies.sh
+├── pacman-packages.sh
+├── languages.sh
+├── secrets.sh
+├── configs.sh
+└── languages/
+```
+
+The main install script acts as the entry point and orchestrates the individual setup steps.
 
 ---
 
@@ -346,7 +484,32 @@ windows/winget-packages.json
 windows/configs.json
 ```
 
+Arch Linux setup uses:
+
+```text
+linux/archlinux/dependencies.json
+linux/archlinux/pacman-packages.json
+linux/archlinux/languages.json
+linux/archlinux/configs.json
+```
+
 This makes the setup easier to update without constantly changing script logic.
+
+---
+
+### Encrypted personal values
+
+Personal values such as Git names, Git emails, SSH host aliases and GPG key IDs should not be committed in plain text.
+
+Instead, encrypted env files are stored in:
+
+```text
+shared/env/
+```
+
+The setup decrypts these files locally with SOPS + age and renders system-specific generated config files.
+
+This keeps personal setup values versioned but encrypted.
 
 ---
 
@@ -361,6 +524,7 @@ For example:
 * missing optional packages should be logged
 * config files can be backed up before being overwritten
 * disabled entries can be skipped without deleting them
+* generated files should be recreated locally
 * logs should be written for later inspection
 
 ---
@@ -376,6 +540,8 @@ Optional applications should log errors and continue.
 Config copy errors should log errors and continue.
 
 WSL installation errors should log errors and continue.
+
+SOPS decryption errors should stop the setup because generated Git and SSH configs depend on them.
 
 This keeps the setup strict where necessary and flexible where useful.
 
@@ -393,6 +559,12 @@ windows/
 ├── winget-packages.json
 ├── configs.json
 └── scripts/
+    ├── common.ps1
+    ├── wsl.ps1
+    ├── dependencies.ps1
+    ├── winget-packages.ps1
+    ├── secrets.ps1
+    └── configs.ps1
 ```
 
 ### `install.ps1`
@@ -407,7 +579,8 @@ Current order:
 1. WSL setup prompt
 2. dependencies.json
 3. winget-packages.json
-4. configs.json
+4. SOPS env preparation
+5. configs.json
 ```
 
 ---
@@ -500,6 +673,37 @@ Example:
 
 ---
 
+### SOPS env preparation
+
+Before config files are copied, the setup prepares encrypted configuration values.
+
+This phase:
+
+* checks that SOPS and age are available
+* asks the user to restore the age private key if needed
+* decrypts `shared/env/git.env.enc`
+* decrypts `shared/env/ssh.env.enc`
+* renders Git and SSH templates
+* writes generated files into the local system config folder
+
+The generated files are then copied by the config phase.
+
+On Windows, SOPS may need to be installed manually if the Winget version is too old.
+
+The expected manual SOPS path on Windows is:
+
+```text
+C:\Tools\sops\sops.exe
+```
+
+See:
+
+```text
+windows/README.md
+```
+
+---
+
 ### `configs.json`
 
 Config files to copy into their target locations.
@@ -516,8 +720,8 @@ Example:
       "enabled": true,
       "files": [
         {
-          "source": "glazewm/config.template.yaml",
-          "target": "~\\.glzr\\glazewm\\config.template.yaml",
+          "source": "glazewm/config.yaml",
+          "target": "~\\.glzr\\glazewm\\config.yaml",
           "overwrite": true,
           "backup": true
         }
@@ -526,6 +730,66 @@ Example:
   ]
 }
 ```
+
+Configs can use local or shared sources.
+
+Example shared source:
+
+```json
+{
+  "source": "git/.gitconfig",
+  "source_base": "shared",
+  "target": "~\\.gitconfig",
+  "overwrite": true,
+  "backup": true
+}
+```
+
+Example generated local source:
+
+```json
+{
+  "source": "generated/.gitconfig-private",
+  "source_base": "local",
+  "target": "~\\.gitconfig-private",
+  "overwrite": true,
+  "backup": true
+}
+```
+
+---
+
+## Arch Linux Setup Overview
+
+The Arch Linux setup currently uses these main files:
+
+```text
+linux/archlinux/
+├── install.sh
+├── dependencies.json
+├── pacman-packages.json
+├── languages.json
+├── configs.json
+└── scripts/
+    ├── common.sh
+    ├── dependencies.sh
+    ├── pacman-packages.sh
+    ├── languages.sh
+    ├── secrets.sh
+    └── configs.sh
+```
+
+Current order:
+
+```text
+1. dependencies.json
+2. pacman-packages.json
+3. languages.json
+4. SOPS env preparation
+5. configs.json
+```
+
+The Arch Linux setup is intended for Arch Linux running inside WSL, but most parts can also be useful on a regular Arch Linux installation.
 
 ---
 
@@ -540,21 +804,28 @@ Windows setup
 ├── WSL prompt
 ├── WSL distro installation
 ├── Winget packages
+├── SOPS + age encrypted env preparation
+├── Config template rendering
 ├── Config file copying
 ├── Backup before overwrite
 ├── Logging
 └── Troubleshooting docs
 ```
 
-Planned or possible future areas:
+Planned or current Arch Linux areas:
 
 ```text
 Arch Linux setup
 ├── Base packages
 ├── Git and SSH
+├── SOPS + age encrypted env preparation
 ├── Shell setup
-├── Node.js
+├── Node.js via nvm
+├── Python via pyenv
+├── Rust
+├── Go
 ├── PHP
+├── Zig
 ├── Docker CLI
 └── programming language tooling
 ```
@@ -581,6 +852,91 @@ windows/README.md
 
 ---
 
+## Running the Arch Linux Setup
+
+Go to the Arch Linux setup folder:
+
+```bash
+cd ~/workspace/github.com/bzmike/dev-setup/linux/archlinux
+```
+
+Run:
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+For details, see:
+
+```text
+linux/archlinux/README.md
+```
+
+---
+
+## Final Manual Steps: SSH and GPG Keys
+
+After the base setup has run, SSH and GPG keys still need to be created manually per machine.
+
+Recommended separation:
+
+```text
+Private:
+- private SSH key
+- private GPG signing key
+- GitHub no-reply email
+
+Work:
+- work SSH key
+- work GPG signing key
+- work email or verified work alias
+```
+
+SSH keys are used for authentication with Git hosts such as GitHub and Bitbucket.
+
+GPG keys are used for signing commits.
+
+The generated Git profile files are:
+
+```text
+~/.gitconfig-private
+~/.gitconfig-work
+```
+
+Each profile should contain its matching GPG signing key:
+
+```
+[user]
+    name = Your Name
+    email = your.email@example.com
+    signingkey = YOUR_GPG_KEY_ID
+```
+
+If the GPG key ID is not known yet when the encrypted env files are created, update the encrypted env files later and regenerate the configs.
+
+Helpful docs:
+
+```text
+docs/git/
+├── keys-windows.md
+├── keys-archlinux.md
+└── add-keys-to-git-hosts.md
+```
+
+In short:
+
+1. Create a private SSH key.
+2. Create a work SSH key.
+3. Add the public SSH keys to GitHub and Bitbucket.
+4. Create a private GPG key.
+5. Create a work GPG key.
+6. Add the public GPG keys to GitHub and Bitbucket.
+7. Store the matching GPG key IDs in the encrypted Git env values.
+8. Regenerate `.gitconfig-private` and `.gitconfig-work`.
+
+---
+
 ## Notes
 
 This setup is mainly intended for personal use.
@@ -593,8 +949,10 @@ It may make assumptions about:
 * WSL usage
 * Arch Linux as the preferred Linux environment
 * JetBrains IDEs running on Windows while toolchains run inside WSL
+* SOPS + age as the encrypted configuration mechanism
+* separate private and work Git identities
 
-Review scripts and JSON files before running them on a new machine.
+Review scripts, JSON files and encrypted setup values before running them on a new machine.
 
 ---
 

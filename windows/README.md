@@ -132,6 +132,36 @@ The bypass only applies to the current PowerShell session. It does not permanent
 
 ---
 
+## SOPS on Windows
+
+Winget may provide an outdated SOPS version. This setup expects SOPS to be installed manually at:
+
+```text
+C:\Tools\sops\sops.exe
+````
+
+Install manually:
+
+```powershell
+New-Item -ItemType Directory -Force C:\Tools\sops
+Copy-Item "$env:USERPROFILE\Downloads\sops-v3.12.2.amd64.exe" "C:\Tools\sops\sops.exe" -Force
+
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+
+if ($userPath -notlike "*C:\Tools\sops*") {
+    [Environment]::SetEnvironmentVariable("Path", "$userPath;C:\Tools\sops", "User")
+}
+
+$env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [Environment]::GetEnvironmentVariable("Path", "User")
+```
+
+Check:
+
+```powershell
+sops --version
+```
+
+
 ## Setup Phases
 
 The setup script runs in this order:
@@ -498,8 +528,8 @@ Example:
       "enabled": true,
       "files": [
         {
-          "source": "glazewm/config.yaml",
-          "target": "~\\.glzr\\glazewm\\config.yaml",
+          "source": "glazewm/config.template.yaml",
+          "target": "~\\.glzr\\glazewm\\config.template.yaml",
           "overwrite": true,
           "backup": true
         }
@@ -531,8 +561,8 @@ For example:
 
 ```json
 {
-  "source": "glazewm/config.yaml",
-  "target": "~\\.glzr\\glazewm\\config.yaml"
+  "source": "glazewm/config.template.yaml",
+  "target": "~\\.glzr\\glazewm\\config.template.yaml"
 }
 ```
 
@@ -572,8 +602,8 @@ C:\Users\<user>\.glzr\glazewm\config.yaml
 
 ```json
 {
-  "source": "glazewm/config.yaml",
-  "target": "~\\.glzr\\glazewm\\config.yaml",
+  "source": "glazewm/config.template.yaml",
+  "target": "~\\.glzr\\glazewm\\config.template.yaml",
   "overwrite": true,
   "backup": true
 }
@@ -594,8 +624,8 @@ If this config is used:
 
 ```json
 {
-  "source": "glazewm/config.yaml",
-  "target": "~\\.glzr\\glazewm\\config.yaml",
+  "source": "glazewm/config.template.yaml",
+  "target": "~\\.glzr\\glazewm\\config.template.yaml",
   "overwrite": true,
   "backup": true
 }
@@ -623,8 +653,8 @@ If `overwrite` is `false` and the target file already exists, the file is skippe
 
 ```json
 {
-  "source": "glazewm/config.yaml",
-  "target": "~\\.glzr\\glazewm\\config.yaml",
+  "source": "glazewm/config.template.yaml",
+  "target": "~\\.glzr\\glazewm\\config.template.yaml",
   "overwrite": false,
   "backup": true
 }

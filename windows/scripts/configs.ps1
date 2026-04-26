@@ -57,6 +57,41 @@ function New-ConfigBackup {
     return $backupPath
 }
 
+function Resolve-ConfigSourcePath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $RootPath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $ConfigsRoot,
+
+        [Parameter(Mandatory = $true)]
+        [object] $File
+    )
+
+    $sourceBase = "local"
+
+    if ($File.PSObject.Properties.Name -contains "source_base") {
+        $sourceBase = $File.source_base
+    }
+
+    switch ($sourceBase) {
+        "local" {
+            return Join-Path $ConfigsRoot $File.source
+        }
+
+        "shared" {
+            $repoRoot = Resolve-Path (Join-Path $RootPath "..")
+            $sharedRoot = Join-Path $repoRoot "shared"
+            return Join-Path $sharedRoot $File.source
+        }
+
+        default {
+            throw "Invalid source_base '$sourceBase' for config source '$($File.source)'. Allowed values: local, shared."
+        }
+    }
+}
+
 function Copy-ConfigFiles {
     param(
         [Parameter(Mandatory = $true)]
@@ -85,7 +120,11 @@ function Copy-ConfigFiles {
 
         foreach ($file in $group.files) {
             try {
-                $sourcePath = Join-Path $configsRoot $file.source
+                $sourcePath = Resolve-ConfigSourcePath `
+                    -RootPath $RootPath `
+                    -ConfigsRoot $configsRoot `
+                    -File $file
+
                 $targetPath = Resolve-UserPath -Path $file.target
                 $targetDirectory = Split-Path -Parent $targetPath
 

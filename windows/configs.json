@@ -23,6 +23,46 @@
           "backup": true
         }
       ]
+    },
+    {
+      "name": "Git",
+      "enabled": true,
+      "files": [
+        {
+          "source": "git/.gitconfig",
+          "source_base": "shared",
+          "target": "~\\.gitconfig",
+          "overwrite": true,
+          "backup": true
+        },
+        {
+          "source": "generated/.gitconfig-private",
+          "source_base": "local",
+          "target": "~\\.gitconfig-private",
+          "overwrite": true,
+          "backup": true
+        },
+        {
+          "source": "generated/.gitconfig-work",
+          "source_base": "local",
+          "target": "~\\.gitconfig-work",
+          "overwrite": true,
+          "backup": true
+        }
+      ]
+    },
+    {
+      "name": "SSH",
+      "enabled": true,
+      "files": [
+        {
+          "source": "generated/ssh-config",
+          "source_base": "local",
+          "target": "~\\.ssh\\config",
+          "overwrite": true,
+          "backup": true
+        }
+      ]
     }
   ]
 }
