@@ -159,8 +159,8 @@ sudo pacman -S git
 Create the recommended workspace structure:
 
 ```bash
-mkdir -p ~/workspace/github.com/bzmike
-cd ~/workspace/github.com/bzmike
+mkdir -p ~/workspace/private/github.com/bzmike
+cd ~/workspace/private/github.com/bzmike
 ```
 
 The recommended structure is:
@@ -168,8 +168,9 @@ The recommended structure is:
 ```text
 ~/workspace/
 └── github.com/
-    └── bzmike/
-        └── dev-setup/
+    └── private/
+        └── bzmike/
+            └── dev-setup/
 ```
 
 ---
@@ -179,7 +180,7 @@ The recommended structure is:
 Clone only the files needed for Arch Linux:
 
 ```bash
-git clone --filter=blob:none --sparse git@github.com:bzmike/dev-setup.git
+git clone https://github.com/bzmike/dev-setup.git
 cd dev-setup
 
 git sparse-checkout set linux/archlinux shared docs
@@ -203,7 +204,7 @@ dev-setup/
 After cloning the repository, continue working from:
 
 ```bash
-cd ~/workspace/github.com/bzmike/dev-setup/linux/archlinux
+cd ~/workspace/private/github.com/bzmike/dev-setup/linux/archlinux
 chmod +x install.sh
 ```
 
