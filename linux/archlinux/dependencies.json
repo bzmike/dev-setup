@@ -27,6 +27,21 @@
       "pacman_name": "gettext",
       "enabled": true,
       "__description": "Used for envsubst to render ${VARIABLES}"
+    },
+    {
+      "name": "Fish",
+      "pacman_name": "fish",
+      "enabled": true
+    },
+    {
+      "name": "Unzip",
+      "pacman_name": "unzip",
+      "enabled": true
+    },
+    {
+      "name": "Coreutils",
+      "pacman_name": "coreutils",
+      "enabled": true
     }
   ],
   "commands": [

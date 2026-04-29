@@ -1,20 +1,6 @@
 {
   "config_groups": [
     {
-      "name": "Bash",
-      "enabled": false,
-      "files": [
-        {
-          "source": "bash/.bashrc",
-          "source_base": "local",
-          "target": "~/.bashrc",
-          "overwrite": true,
-          "backup": true,
-          "mode": "644"
-        }
-      ]
-    },
-    {
       "name": "SSH",
       "enabled": true,
       "files": [
@@ -56,6 +42,34 @@
           "overwrite": true,
           "backup": true,
           "mode": "600"
+        }
+      ]
+    },
+    {
+      "name": "Fish",
+      "enabled": true,
+      "files": [
+        {
+          "source": "fish/config.fish",
+          "source_base": "local",
+          "target": "~/.config/fish/config.fish",
+          "overwrite": true,
+          "backup": true,
+          "mode": "644"
+        }
+      ]
+    },
+    {
+      "name": "Oh My Posh",
+      "enabled": true,
+      "files": [
+        {
+          "source": "generated/tokyo.omp.json",
+          "source_base": "local",
+          "target": "~/.poshthemes/tokyo.omp.json",
+          "overwrite": true,
+          "backup": true,
+          "mode": "644"
         }
       ]
     }

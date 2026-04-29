@@ -7,6 +7,18 @@
       "__description": "Keyboard layout"
     },
     {
+      "name": "WezTerm",
+      "winget_id": "wez.wezterm",
+      "enabled": true,
+      "__description": "Terminal emulator"
+    },
+    {
+      "name": "JetBrainsMono Nerd Font",
+      "winget_id": "DEVCOM.JetBrainsMonoNerdFont",
+      "enabled": true,
+      "__description": "Nerd Font for terminal icons"
+    },
+    {
       "name": "GlazeWM",
       "winget_id": "glzr-io.glazewm",
       "enabled": true,

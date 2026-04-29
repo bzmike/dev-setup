@@ -63,6 +63,19 @@
           "backup": true
         }
       ]
+    },
+    {
+      "name": "WezTerm",
+      "enabled": true,
+      "files": [
+        {
+          "source": "wezterm/.wezterm.lua",
+          "source_base": "local",
+          "target": "~\\.wezterm.lua",
+          "overwrite": true,
+          "backup": true
+        }
+      ]
     }
   ]
 }

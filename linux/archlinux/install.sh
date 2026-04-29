@@ -10,6 +10,7 @@ source "$SCRIPTS_ROOT/pacman-packages.sh"
 source "$SCRIPTS_ROOT/languages.sh"
 source "$SCRIPTS_ROOT/secrets.sh"
 source "$SCRIPTS_ROOT/configs.sh"
+source "$SCRIPTS_ROOT/shell.sh"
 
 init_logging "$SCRIPT_ROOT"
 
@@ -17,12 +18,10 @@ log_info "Starting Arch Linux dev setup..."
 
 install_dependencies "$SCRIPT_ROOT"
 install_pacman_packages "$SCRIPT_ROOT"
+install_shell_setup "$SCRIPT_ROOT"
 install_language_setups "$SCRIPT_ROOT"
 prepare_encrypted_env_files "$SCRIPT_ROOT"
 copy_config_files "$SCRIPT_ROOT"
-
-# shellcheck disable=SC1090
-source ~/.bashrc
 
 log_success "Arch Linux dev setup completed."
 log_info "Log file: $LOG_FILE"
